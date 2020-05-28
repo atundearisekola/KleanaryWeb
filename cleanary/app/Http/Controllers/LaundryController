@@ -1,0 +1,167 @@
+<?php
+
+namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use App\laundry;
+
+class HomeController extends Controller
+{
+	public function randStrGennosc($len)
+{
+	$result ="";
+	$chars = "abcdefghijklmnpqrstuvwsyz01234567891111111";
+	$charArray = str_split($chars);
+	for ($i=0; $i < $len; $i++){ 
+		$randItem = array_rand($charArray);
+		$result .="".  $charArray[$randItem];
+	}
+	return $result;
+}
+
+	  public function makerequest(Request $request)
+    {
+        $this->validate($request,[
+           
+            'addr'=>'required',
+            'state'=>'required',
+            'country'=>'required',
+            'localgov'=>'required',
+            'laundryimg.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048']);
+        $laundry= new loundry();
+         $tshirtprice = 150;
+    $trouserprice = 100;
+    $bedshitprice = 200;
+    $bagsprice = 200;
+    $tieprice = 0;
+    $towelprice = 100;
+    $shoesprice = 200;
+    $ironprice = 150;
+    $dtime= date();
+    $data ="";
+    $len=20;
+$txref = randStrGennosc($len);
+
+    
+        $laundryimgs = $request->file('laundryimg');
+         if($request->hasfile('laundryimg'))
+         {
+
+            foreach($request->file('laundryimg') as $image)
+            {
+                $name=$image->getClientOriginalName();
+                $image->move('/users/'.Auth::user()->id, $name);  
+                $data .= $dtime.$name.',';  
+            }
+         }
+        
+        $laundry->tshirt = $request['tshirt'];
+        $laundry->trouser = $request['trouser'];
+        $laundry->bedshit = $request['bedshit'];
+        $laundry->tie = $request['tie'];
+        $laundry->shoes = $request['shoes'];
+        $laundry->bags = $request['bags'];
+        $laundry->towel = $request['towel'];
+        $favperfumes = $request['favperfume'];
+        $favperfumes = explode(',', $favperfumes);
+        $laundry->favperfume = $favperfumes[0];
+        $favstarchs = $request['favstarch'];
+        $favstarchs = explode(',', $favstarchs);
+        $laundry->favstarch = $favstarchs[0];
+
+        $starchinput = "";
+        $starchinputs = $request['starchinput'];
+        $starchinputs = explode(',', $starchinputs);
+        $nstarch = count($starchinputs);
+        for ($i=0; $i < count($starchinputs); $i++) { 
+        	$starchinput .= $dtime.$starchinputs[$i].",";
+
+        }
+        $laundry->todostarch = $starchinput; 
+        
+   
+
+        $perfumeinput="";
+        $perfumeinputs= $request['perfumeinput'];
+        $perfumeinputs = explode(',', $perfumeinputs);
+        $nperfume = count($perfumeinputs);
+        for ($i=0; $i < count($perfumeinputs); $i++) { 
+        	$perfumeinput .= $dtime.$perfumeinputs[$i].",";
+
+        }
+        $laundry->todoperfume = $perfumeinput; 
+
+        $ironinput="";
+        $ironinputs = $request['ironinput'];
+        $ironinputs = explode(',', $ironinputs);
+        $niron = count($ironinputs);
+        for ($i=0; $i < count($ironinputs); $i++) { 
+        	$ironinput .= $dtime.$ironinputs[$i].",";
+
+        }
+        $laundry->todoiron = $ironinput; 
+        
+      
+        $laundry->paymentstatus = "n"; 
+        $laundry->lstatus = "waiting"; 
+        $laundry->txref = $txref; 
+
+        $laundry->addr = $request['addr'];
+        $laundry->country = $request['country'];
+        $laundry->state = $request['state'];
+        $laundry->localgov = $request['localgov'];
+        $laundry->shortmsg = $request['shortnote'];
+
+        $tshirtprice = $tshirtprice*$request['shirt'];
+    $trouserprice = $trouserprice*$request['trouser'];
+    $bedshitprice = $bedshitprice*$request['bedshit'];
+    $bagsprice = $bagsprice*$request['bags'];
+    $tieprice = $tieprice*$request['tie'];
+    $towelprice = $towelprice*$request['towel'];
+    $shoesprice = $shoesprice*$request['shoes'];
+    $perfumeprice = $perfumeprice*$nperfume;
+    $starchprice = $starchprice*$nstarch;
+    $ironprice = $ironprice*$niron;
+    $totalprice =  $tshirtprice+$trouserprice+$bedshitprice+$bagsprice +$tieprice +$towelprice +$shoesprice +$perfumeprice+$starchprice+$ironprice;
+        $laundry->totalprice = $totalprice; 
+        $laundry->laundryimg = $data; 
+        $request->user()->laundries()->save();
+        return redirect()->route('home');
+
+        
+    }
+
+    public function viewlaundry(Request $request)
+    {
+        $single = laundry::where('id',$request['lid']);
+        $userid = $single['user_id'];
+$tshirt = $single['tshirt'];
+$trouser = $single['trouser'];
+$bedshit = $single['bedshit'];
+$tie = $single['tie'];
+$shoes = $single['shoes'];
+$bags = $single['bags'];
+$towel = $single['towel'];
+$favperfume = $single['favperfume'];
+$favstarch = $single['favstarch'];
+$todostarch = $single['todostarch'];
+$todoperfume= $single['todoperfume'];
+$todoiron = $single['todoiron'];
+ $addr = $single['addr'];
+ $country = $single['country'];
+ $state = $single['state'];
+ $localgov = $single['localgov'];
+  $totalprice = $single['totalprice'];
+  $dtime = $single['created_at'];
+  $status = $single['lstatus'];
+   $shortnote = $single['shortnote'];
+
+
+
+        return response()->json_encode(['tshirt'=>$tshirt,'trouser'=>$trouser,'bedshit'=>$bedshit,'tie'=>$tie,'shoes'=>$shoes,'bags'=>$bags,'towel'=>$towel,'favperfume'=>$favperfume,'favstarch'=>$favstarch,'todostarch'=>$todostarch,'todoperfume'=>$todoperfume,'todoiron'=>$todoiron,'addr'=>$addr,'country'=>$country,'state'=>$state,'localgov'=>$localgov,'totalprice'=>$totalprice,'createdat'=>$dtime,'lstatus'=>$status,'userid'=>$userid,'shortnote'=>$shortnote],200);
+    }
+
+
+}
+
+?>

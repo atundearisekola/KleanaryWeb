@@ -1,0 +1,295 @@
+
+table{
+   border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 15px 30px rgba(0,0,0, .2),
+  0 10px 10px rgba(0,0,0,.2);
+ 
+}
+
+  .overlay-container{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: transform .5s ease-in-out;
+    z-index: 100;
+
+  }
+  .overlay{
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    background: linear-gradient(to bottom right, #7fd625,#000);
+    color: #fff;
+    transform:translateX(0);
+    transition: transform .5s ease-in-out;
+  }
+   .login-page{
+   
+    
+    color: #fff;
+    transform:translateX(0);
+    transition: transform .5s ease-in-out;
+  }
+  @mixin overlays($property){
+    position: absolute;
+    top: 0;
+    display: flex;
+    align-items:center;
+    justify-content:space-around;
+    flex-direction: column;
+    padding: 70px 40px;
+    width: calc(50%-80px);
+    height: calc(100%-140px); 
+    text-align: center;
+    transform:translateX(-20%);
+    transition:transform .5s ease-in-out;
+  }
+
+  .overlay-left{ 
+    position: absolute;
+    top: 0;
+    display: flex;
+    align-items:center;
+    justify-content:space-around;
+    flex-direction: column;
+    padding: 70px 40px;
+    width: calc(50%-80px);
+    height: calc(100%-140px); 
+    text-align: center;
+    transform:translateX(-20%);
+    transition:transform .5s ease-in-out;
+  }
+  .overlay-right{
+    position: absolute;
+    top: 0;
+    display: flex;
+    align-items:center;
+    justify-content:space-around;
+    flex-direction: column;
+    padding: 70px 40px;
+    width: calc(50%-80px);
+    height: calc(100%-140px); 
+    text-align: center;
+    transform:translateX(0);
+    transition:transform .5s ease-in-out;
+    right: 0;
+  }
+
+}
+
+p{
+  margin: 20px 0 30px;
+}
+a{
+  color: #222;
+  text-decoration: none;
+   
+ 
+}
+.login-box-body a{margin: 15px 0;
+  font-size: 1rem;}
+button{
+  border-radius: 20px;
+  border:1px solid #009345;
+  background: #009345;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 10px 40px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition:transform .1s ease-in-out;
+
+  &:active{
+    transform:scale(.9);
+  }
+  &:focus{
+    outline: none;
+  }
+ }
+  button.invert{
+    background-color:  transparent;
+    border-color: #fff;
+  }
+
+  form{
+    
+  
+
+    div{
+      font-size: 1rem;
+    }
+    input{
+      background-color: #eee;
+      border: none;
+      
+      border-radius: 15px;
+      border-bottom: 1px solid #ddd;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,.4),
+      0 -1px 1px #fff,
+      0 1px 0 #fff;
+      overflow: hidden;
+      &:focus{
+        outline:none;
+        background-color: #fff;
+
+
+      }
+    }
+  }
+  .card form{
+    align-items:left;
+    text-align: left;
+  }
+  
+
+.sign-in{
+  left: 0;
+  z-index: 2;
+
+}
+.sign-up{
+  left: 0;
+  z-index: 1;
+  opacity: 0;
+
+}
+
+.sign-up-active{
+  .sign-in{
+    transform:translateX(100%); 
+  }
+  .sign-up{
+      transform:translateX(100%);
+      opacity: 1;
+      z-index: 5;
+      animation: show .5s;
+  }
+  .overlay-container{
+     transform:translateX(-100%);
+  }
+  .overlay{
+     transform:translateX(50%);
+  }
+  .overlay-left{
+     transform:translateX(0);
+  }
+  .overlay-right{
+     transform:translateX(20%);
+  }
+ }
+  @keyframes show{
+    0%{
+      opacity: 0;
+      z-index: 1;
+    }
+    49%{
+      opacity: 0;
+      z-index: 1;
+
+    }
+    50%{
+      opacity: 1;
+      z-index: 1;
+    }
+  }
+
+
+
+
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,600');
+
+body {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+p, blockquote {
+    font-size: .9em;
+    line-height: 1.6em;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    text-align: center;
+    padding: .8em 1.2em;
+}
+
+
+
+.hide-mobile {
+    display: none;
+}
+@media only screen and (min-width: 1024px)  {
+
+    .cta {
+        width: 50%;
+    }
+
+    .container {
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    .show-desktop {
+        display: block;
+        margin: 0 auto 13% auto;
+    }
+
+    .hide-desktop {
+        display: none;
+    }
+
+    nav ul {
+        position: inherit;
+        width: auto;
+        background: none;
+        height: auto;
+        display: flex;
+        padding-top: 0;
+    }
+
+    nav ul li {
+        float: left;
+    }
+
+    nav ul li a {
+        color: black;
+        background-color: inherit;
+        text-align: right;
+        padding: 1em 2em;
+    }
+
+    nav ul li a:hover {
+        background-color: inherit;
+    }
+
+    .scroll {
+        width: 30px;
+        animation: move 1s infinite alternate;
+    }
+
+    @keyframes move {
+        from {
+            transform: translateY(0px);
+        }
+        to {
+            transform: translateY(20px);
+        }
+    }
+
+}
+
+
+

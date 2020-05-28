@@ -1,0 +1,9 @@
+.root {
+    flexGrow: 1;
+  }
+  .menuButton {
+    marginRight:spacing(2),
+  }
+ .title {
+    flexGrow: 1;
+  }
